@@ -1007,7 +1007,6 @@ function ProjectCard({
   tags,
   status,
   statusLive,
-  cta,
   year,
   category,
   index,
@@ -1020,7 +1019,6 @@ function ProjectCard({
   tags: readonly string[];
   status: string;
   statusLive: boolean;
-  cta: string;
   year: string;
   category: string;
   index: number;
