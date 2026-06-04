@@ -853,8 +853,7 @@ const skills = [
 const references = [
   {
     name: "Ayaz Rosén",
-    title:
-      "Verksamhetschef på Rinkeby Folkets Hus. En mentor som följt min resa sedan starten.",
+    title: "AI & Cybersäkerhetsstrateg. Jobbade på Microsoft i 13 år.",
     relation: "Mentor",
     handle: "ayazshukat",
   },
