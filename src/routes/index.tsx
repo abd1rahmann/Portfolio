@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import portrait from "@/assets/abdi-portrait.jpg.asset.json";
 import acUnitVideo from "@/assets/ac-unit.mp4.asset.json";
+import easybankImage from "@/assets/easybank.png.asset.json";
 import {
   Home,
   User,
@@ -285,9 +286,9 @@ const dict = {
 } as const;
 
 const projectsMeta = [
-  { tags: ["C#", ".NET MAUI", "Azure", "SQL"], status: "inProgress", cta: "readMore", year: "2026", category: "Mobile / FinTech", video: null as string | null },
-  { tags: ["ASP.NET Core", "Razor Pages", "EF Core", "SQL Server", "Bootstrap"], status: "live", cta: "liveDemo", year: "2025", category: "Web / FinTech", video: null as string | null },
-  { tags: ["WPF", "MVVM", "Azure IoT Hub", "C#", "Device Twin"], status: "live", cta: "seeCode", year: "2025", category: "Desktop / IoT", video: acUnitVideo.url as string | null },
+  { tags: ["C#", ".NET MAUI", "Azure", "SQL"], status: "inProgress", cta: "readMore", year: "2026", category: "Mobile / FinTech", video: null as string | null, image: null as string | null },
+  { tags: ["ASP.NET Core", "Razor Pages", "EF Core", "SQL Server", "Bootstrap"], status: "live", cta: "liveDemo", year: "2025", category: "Web / FinTech", video: null as string | null, image: easybankImage.url as string | null },
+  { tags: ["WPF", "MVVM", "Azure IoT Hub", "C#", "Device Twin"], status: "live", cta: "seeCode", year: "2025", category: "Desktop / IoT", video: acUnitVideo.url as string | null, image: null as string | null },
 ] as const;
 
 const skillsMeta = [
@@ -700,6 +701,7 @@ function PortfolioPage() {
                     index={i + 1}
                     commitLabel={t.commit}
                     video={meta.video}
+                    image={meta.image}
                   />
                 );
               })}
@@ -1011,6 +1013,7 @@ function ProjectCard({
   index,
   commitLabel,
   video,
+  image,
 }: {
   title: string;
   desc: string;
@@ -1023,6 +1026,7 @@ function ProjectCard({
   index: number;
   commitLabel: string;
   video?: string | null;
+  image?: string | null;
 }) {
   return (
     <article className="group relative grid gap-6 rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent-tech hover:shadow-tech md:grid-cols-12 md:p-8">
@@ -1065,6 +1069,24 @@ function ProjectCard({
               playsInline
               preload="metadata"
               className="aspect-video w-full bg-black object-contain"
+            />
+          </div>
+        )}
+        {image && !video && (
+          <div className="mt-5 overflow-hidden rounded-lg border border-border bg-background shadow-tech">
+            <div className="flex items-center gap-1.5 border-b border-border bg-secondary/50 px-3 py-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.18_27)]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.78_0.15_85)]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-accent-tech" />
+              <span className="ml-2 font-mono text-[10px] text-muted-foreground">
+                preview.png
+              </span>
+            </div>
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              className="aspect-video w-full bg-black object-cover"
             />
           </div>
         )}
