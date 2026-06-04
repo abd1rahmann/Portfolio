@@ -699,6 +699,7 @@ function PortfolioPage() {
                     category={meta.category}
                     index={i + 1}
                     commitLabel={t.commit}
+                    video={meta.video}
                   />
                 );
               })}
