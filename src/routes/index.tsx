@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import portrait from "@/assets/abdi-portrait.jpg.asset.json";
 import acUnitVideo from "@/assets/ac-unit.mp4.asset.json";
 import easybankImage from "@/assets/easybank.png.asset.json";
+import siliconImage from "@/assets/silicon.png.asset.json";
 import {
   Home,
   User,
