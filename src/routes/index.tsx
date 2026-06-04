@@ -182,39 +182,64 @@ function PortfolioPage() {
       <main className="md:ml-72">
         {/* HEM */}
         <Section id="hem" className="grid-paper">
-          <div className="mx-auto flex min-h-[88vh] max-w-5xl flex-col justify-center px-6 py-24 md:px-16">
-            <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-foreground animate-pulse" />
-              tillgänglig för uppdrag
-            </div>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-[0.95] tracking-tighter md:text-7xl lg:text-8xl">
-              Abdirahman
-              <br />
-              <span className="text-muted-foreground">Elmi.</span>
-            </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-foreground/80 md:text-xl">
-              .NET-utvecklare med ett hjärta för ren arkitektur. Jag bygger
-              stabila och skalbara lösningar med{" "}
-              <span className="font-mono text-foreground">C#</span>,{" "}
-              <span className="font-mono text-foreground">ASP.NET</span> och{" "}
-              <span className="font-mono text-foreground">Azure</span>.
-            </p>
+          <div className="mx-auto grid min-h-[88vh] max-w-6xl items-center gap-12 px-6 py-24 md:grid-cols-12 md:px-16">
+            <div className="md:col-span-7">
+              <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-foreground animate-pulse" />
+                tillgänglig för uppdrag
+              </div>
+              <h1 className="mt-6 font-display text-5xl font-bold leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
+                Abdirahman
+                <br />
+                <span className="text-muted-foreground">Elmi.</span>
+              </h1>
+              <p className="mt-8 max-w-xl text-lg leading-relaxed text-foreground/80 md:text-xl">
+                .NET-utvecklare med ett hjärta för ren arkitektur. Jag bygger
+                stabila och skalbara lösningar med{" "}
+                <span className="font-mono text-foreground">C#</span>,{" "}
+                <span className="font-mono text-foreground">ASP.NET</span> och{" "}
+                <span className="font-mono text-foreground">Azure</span>.
+              </p>
 
-            <div className="mt-12 flex flex-wrap gap-3">
-              <a
-                href="#projekt"
-                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
-              >
-                Se projekt
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
-              </a>
-              <a
-                href="#kontakt"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium hover:bg-secondary"
-              >
-                Kontakta mig
-              </a>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <a
+                  href="#projekt"
+                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
+                >
+                  Se projekt
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+                </a>
+                <a
+                  href="#kontakt"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium hover:bg-secondary"
+                >
+                  Kontakta mig
+                </a>
+              </div>
             </div>
+
+            <div className="md:col-span-5">
+              <div className="relative mx-auto max-w-sm">
+                <div className="absolute -inset-3 -z-10 rounded-2xl border border-border" />
+                <div className="absolute -bottom-3 -right-3 -z-10 h-full w-full rounded-2xl bg-foreground" />
+                <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                  <img
+                    src={portrait.url}
+                    alt="Porträtt av Abdirahman Elmi"
+                    className="aspect-[4/5] w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                    loading="eager"
+                  />
+                </div>
+                <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <span>Stockholm · SE</span>
+                  <span>/ 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto max-w-6xl px-6 pb-24 md:px-16">
+            <div className="grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
 
             <div className="mt-20 grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
               {[
