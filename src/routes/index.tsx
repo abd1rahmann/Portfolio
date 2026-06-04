@@ -689,14 +689,13 @@ function PortfolioPage() {
               {projectsMeta.map((meta, i) => {
                 const p = t.projects[i];
                 return (
-                  <ProjectCard
+                <ProjectCard
                     key={p.title}
                     title={p.title}
                     desc={p.desc}
                     tags={meta.tags as readonly string[]}
                     status={t.projectStatus[meta.status]}
                     statusLive={meta.status === "live"}
-                    cta={t.projectCtas[meta.cta]}
                     year={meta.year}
                     category={meta.category}
                     index={i + 1}
