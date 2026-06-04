@@ -123,7 +123,7 @@ const dict = {
     footerEcho: "© 2026 Abdirahman Elmi",
     footerBranch: "main · byggd i Stockholm",
     projectStatus: { live: "Live", inProgress: "I process" },
-    projectCtas: { readMore: "Läs mer", liveDemo: "Live demo", seeCode: "Se kod" },
+    projectCtas: { readMore: "Läs mer", seeCode: "Se kod" },
     commit: "commit",
     projects: [
       {
