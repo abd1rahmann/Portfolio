@@ -1013,6 +1013,7 @@ function ProjectCard({
   index,
   commitLabel,
   video,
+  image,
 }: {
   title: string;
   desc: string;
@@ -1025,6 +1026,7 @@ function ProjectCard({
   index: number;
   commitLabel: string;
   video?: string | null;
+  image?: string | null;
 }) {
   return (
     <article className="group relative grid gap-6 rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent-tech hover:shadow-tech md:grid-cols-12 md:p-8">
