@@ -237,7 +237,7 @@ const dict = {
     footerEcho: "© 2026 Abdirahman Elmi",
     footerBranch: "main · built in Stockholm",
     projectStatus: { live: "Live", inProgress: "In progress" },
-    projectCtas: { readMore: "Read more", liveDemo: "Live demo", seeCode: "View code" },
+    projectCtas: { readMore: "Read more", seeCode: "View code" },
     commit: "commit",
     projects: [
       {
