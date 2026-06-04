@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import portrait from "@/assets/abdi-portrait.jpg.asset.json";
 import {
   Home,
   User,
