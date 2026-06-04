@@ -701,6 +701,7 @@ function PortfolioPage() {
                     index={i + 1}
                     commitLabel={t.commit}
                     video={meta.video}
+                    image={meta.image}
                   />
                 );
               })}
