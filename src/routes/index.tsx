@@ -240,8 +240,6 @@ function PortfolioPage() {
 
           <div className="mx-auto max-w-6xl px-6 pb-24 md:px-16">
             <div className="grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
-
-            <div className="mt-20 grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
               {[
                 { k: "Stack", v: ".NET · C#" },
                 { k: "Plats", v: "Stockholm" },
