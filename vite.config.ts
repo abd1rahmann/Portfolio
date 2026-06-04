@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Explicit empty plugins array so Cloudflare's auto-setup can detect/modify it.
+    plugins: [],
+  },
 });
