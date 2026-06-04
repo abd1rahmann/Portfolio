@@ -123,7 +123,7 @@ const dict = {
     footerEcho: "© 2026 Abdirahman Elmi",
     footerBranch: "main · byggd i Stockholm",
     projectStatus: { live: "Live", inProgress: "I process" },
-    projectCtas: { readMore: "Läs mer", liveDemo: "Live demo", seeCode: "Se kod" },
+    projectCtas: { readMore: "Läs mer", seeCode: "Se kod" },
     commit: "commit",
     projects: [
       {
@@ -237,7 +237,7 @@ const dict = {
     footerEcho: "© 2026 Abdirahman Elmi",
     footerBranch: "main · built in Stockholm",
     projectStatus: { live: "Live", inProgress: "In progress" },
-    projectCtas: { readMore: "Read more", liveDemo: "Live demo", seeCode: "View code" },
+    projectCtas: { readMore: "Read more", seeCode: "View code" },
     commit: "commit",
     projects: [
       {
@@ -287,9 +287,9 @@ const dict = {
 } as const;
 
 const projectsMeta = [
-  { tags: ["C#", ".NET MAUI", "Azure", "SQL"], status: "inProgress", cta: "readMore", year: "2026", category: "Mobile / FinTech", video: null as string | null, image: siliconImage.url as string | null },
-  { tags: ["ASP.NET Core", "Razor Pages", "EF Core", "SQL Server", "Bootstrap"], status: "live", cta: "liveDemo", year: "2025", category: "Web / FinTech", video: null as string | null, image: easybankImage.url as string | null },
-  { tags: ["WPF", "MVVM", "Azure IoT Hub", "C#", "Device Twin"], status: "live", cta: "seeCode", year: "2025", category: "Desktop / IoT", video: acUnitVideo.url as string | null, image: null as string | null },
+  { tags: ["C#", ".NET MAUI", "Azure", "SQL"], status: "inProgress", year: "2026", category: "Mobile / FinTech", video: null as string | null, image: siliconImage.url as string | null },
+  { tags: ["ASP.NET Core", "Razor Pages", "EF Core", "SQL Server", "Bootstrap"], status: "live", year: "2025", category: "Web / FinTech", video: null as string | null, image: easybankImage.url as string | null },
+  { tags: ["WPF", "MVVM", "Azure IoT Hub", "C#", "Device Twin"], status: "live", year: "2025", category: "Desktop / IoT", video: acUnitVideo.url as string | null, image: null as string | null },
 ] as const;
 
 const skillsMeta = [
@@ -689,14 +689,13 @@ function PortfolioPage() {
               {projectsMeta.map((meta, i) => {
                 const p = t.projects[i];
                 return (
-                  <ProjectCard
+                <ProjectCard
                     key={p.title}
                     title={p.title}
                     desc={p.desc}
                     tags={meta.tags as readonly string[]}
                     status={t.projectStatus[meta.status]}
                     statusLive={meta.status === "live"}
-                    cta={t.projectCtas[meta.cta]}
                     year={meta.year}
                     category={meta.category}
                     index={i + 1}
@@ -1008,7 +1007,6 @@ function ProjectCard({
   tags,
   status,
   statusLive,
-  cta,
   year,
   category,
   index,
@@ -1021,7 +1019,6 @@ function ProjectCard({
   tags: readonly string[];
   status: string;
   statusLive: boolean;
-  cta: string;
   year: string;
   category: string;
   index: number;
@@ -1100,13 +1097,6 @@ function ProjectCard({
               {tag}
             </span>
           ))}
-          <a
-            href="#"
-            className="ml-auto inline-flex items-center gap-1 font-mono text-xs font-medium text-foreground transition-colors hover:text-accent-tech"
-          >
-            {cta}
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:rotate-45" />
-          </a>
         </div>
       </div>
     </article>
