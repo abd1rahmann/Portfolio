@@ -7,13 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Explicit empty top-level plugins array so Cloudflare's auto-setup can detect/modify it.
+  plugins: [],
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
-  },
-  vite: {
-    // Explicit empty plugins array so Cloudflare's auto-setup can detect/modify it.
-    plugins: [],
   },
 });
