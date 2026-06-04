@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import portrait from "@/assets/abdi-portrait.jpg.asset.json";
 import acUnitVideo from "@/assets/ac-unit.mp4.asset.json";
 import easybankImage from "@/assets/easybank.png.asset.json";
+import siliconImage from "@/assets/silicon.png.asset.json";
 import {
   Home,
   User,
@@ -286,7 +287,7 @@ const dict = {
 } as const;
 
 const projectsMeta = [
-  { tags: ["C#", ".NET MAUI", "Azure", "SQL"], status: "inProgress", cta: "readMore", year: "2026", category: "Mobile / FinTech", video: null as string | null, image: null as string | null },
+  { tags: ["C#", ".NET MAUI", "Azure", "SQL"], status: "inProgress", cta: "readMore", year: "2026", category: "Mobile / FinTech", video: null as string | null, image: siliconImage.url as string | null },
   { tags: ["ASP.NET Core", "Razor Pages", "EF Core", "SQL Server", "Bootstrap"], status: "live", cta: "liveDemo", year: "2025", category: "Web / FinTech", video: null as string | null, image: easybankImage.url as string | null },
   { tags: ["WPF", "MVVM", "Azure IoT Hub", "C#", "Device Twin"], status: "live", cta: "seeCode", year: "2025", category: "Desktop / IoT", video: acUnitVideo.url as string | null, image: null as string | null },
 ] as const;
