@@ -1097,13 +1097,6 @@ function ProjectCard({
               {tag}
             </span>
           ))}
-          <a
-            href="#"
-            className="ml-auto inline-flex items-center gap-1 font-mono text-xs font-medium text-foreground transition-colors hover:text-accent-tech"
-          >
-            {cta}
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:rotate-45" />
-          </a>
         </div>
       </div>
     </article>
