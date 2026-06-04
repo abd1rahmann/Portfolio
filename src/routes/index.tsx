@@ -1033,16 +1033,12 @@ function ProjectCard({
         <div className="mt-1 font-mono text-sm font-bold tracking-wider">
           #{String(index).padStart(3, "0")}
         </div>
-        <div
-          className={`mt-4 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest ${
-            statusLive
-              ? "bg-accent-tech text-background"
-              : "border border-border text-muted-foreground"
-          }`}
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-current" />
-          {status}
-        </div>
+        {!statusLive && (
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+            {status}
+          </div>
+        )}
         <div className="mt-3 font-mono text-[10px] text-muted-foreground">{year}</div>
       </div>
       <div className="md:col-span-9">
