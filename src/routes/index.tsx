@@ -18,6 +18,14 @@ import {
   ArrowUpRight,
   Menu,
   X,
+  Terminal,
+  Cpu,
+  Database,
+  Cloud,
+  Code2,
+  Zap,
+  GitBranch,
+  Activity,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -42,17 +50,34 @@ export const Route = createFileRoute("/")({
 });
 
 const sections = [
-  { id: "hem", label: "Hem", icon: Home },
-  { id: "om", label: "Om mig", icon: User },
-  { id: "projekt", label: "Projekt", icon: FolderGit2 },
-  { id: "kunskap", label: "Kunskap", icon: Sparkles },
-  { id: "kontakt", label: "Kontakt", icon: Mail },
-  { id: "referenser", label: "Referenser", icon: Quote },
+  { id: "hem", label: "Hem", icon: Home, cmd: "~/home" },
+  { id: "om", label: "Om mig", icon: User, cmd: "~/about" },
+  { id: "projekt", label: "Projekt", icon: FolderGit2, cmd: "~/projects" },
+  { id: "kunskap", label: "Kunskap", icon: Sparkles, cmd: "~/skills" },
+  { id: "kontakt", label: "Kontakt", icon: Mail, cmd: "~/contact" },
+  { id: "referenser", label: "Referenser", icon: Quote, cmd: "~/refs" },
 ];
 
 function PortfolioPage() {
   const [active, setActive] = useState("hem");
   const [navOpen, setNavOpen] = useState(false);
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const tick = () => {
+      const d = new Date();
+      const fmt = new Intl.DateTimeFormat("sv-SE", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZone: "Europe/Stockholm",
+      }).format(d);
+      setTime(fmt);
+    };
+    tick();
+    const i = setInterval(tick, 1000);
+    return () => clearInterval(i);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -74,8 +99,9 @@ function PortfolioPage() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Mobile top bar */}
       <header className="md:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/90 backdrop-blur px-4 py-3">
-        <a href="#hem" className="font-display text-sm font-bold tracking-tight">
-          ABDI<span className="text-muted-foreground">.elmi</span>
+        <a href="#hem" className="flex items-center gap-2 font-mono text-sm font-bold tracking-tight">
+          <Terminal className="h-4 w-4 text-accent-tech" />
+          abdi<span className="text-muted-foreground">@elmi:~$</span>
         </a>
         <button
           onClick={() => setNavOpen((o) => !o)}
@@ -88,26 +114,37 @@ function PortfolioPage() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-30 w-72 flex-col justify-between border-r border-sidebar-border bg-sidebar text-sidebar-foreground p-8 transition-transform duration-300
+        className={`fixed inset-y-0 left-0 z-30 w-72 flex-col justify-between border-r border-sidebar-border bg-sidebar text-sidebar-foreground p-6 transition-transform duration-300
           ${navOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:flex`}
       >
         <div>
-          <div className="flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-full bg-sidebar-foreground text-sidebar font-display font-bold">
-              AE
+          {/* Terminal-style brand */}
+          <div className="rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-3">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.18_27)]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.78_0.15_85)]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-accent-tech" />
+              <span className="ml-auto font-mono text-[10px] text-sidebar-foreground/40">
+                ~/portfolio
+              </span>
             </div>
-            <div>
-              <div className="font-display text-lg font-bold leading-tight">
-                Abdi Elmi
+            <div className="mt-3 font-mono text-[11px] leading-relaxed text-sidebar-foreground/80">
+              <div>
+                <span className="text-accent-tech">$</span> whoami
               </div>
-              <div className="text-xs text-sidebar-foreground/60">
-                .NET Developer
+              <div className="text-sidebar-foreground">abdirahman.elmi</div>
+              <div className="mt-1">
+                <span className="text-accent-tech">$</span> role
               </div>
+              <div className="text-sidebar-foreground">.NET Developer</div>
             </div>
           </div>
 
-          <nav className="mt-12 space-y-1">
-            {sections.map((s) => {
+          <nav className="mt-8 space-y-1">
+            <div className="px-3 pb-2 font-mono text-[10px] uppercase tracking-widest text-sidebar-foreground/40">
+              // navigation
+            </div>
+            {sections.map((s, idx) => {
               const Icon = s.icon;
               const isActive = active === s.id;
               return (
@@ -115,65 +152,64 @@ function PortfolioPage() {
                   key={s.id}
                   href={`#${s.id}`}
                   onClick={() => setNavOpen(false)}
-                  className={`group flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors
+                  className={`group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all
                     ${
                       isActive
                         ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
+                        : "text-sidebar-foreground/65 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
                     }`}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span className="font-medium">{s.label}</span>
                   <span
-                    className={`ml-auto font-mono text-[10px] transition-opacity ${
-                      isActive ? "opacity-100" : "opacity-0 group-hover:opacity-60"
+                    className={`font-mono text-[10px] ${
+                      isActive ? "text-accent-tech" : "text-sidebar-foreground/40"
                     }`}
                   >
-                    0{sections.indexOf(s) + 1}
+                    {String(idx + 1).padStart(2, "0")}
                   </span>
+                  <Icon className="h-3.5 w-3.5" />
+                  <span className="font-medium">{s.label}</span>
+                  {isActive && (
+                    <span className="ml-auto font-mono text-[10px] text-accent-tech animate-caret">
+                      ▌
+                    </span>
+                  )}
                 </a>
               );
             })}
             <a
               href="#cv"
-              className="mt-4 flex items-center gap-3 rounded-md border border-sidebar-border px-3 py-2.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent"
+              className="mt-4 flex items-center gap-3 rounded-md border border-sidebar-border px-3 py-2 text-sm font-medium text-sidebar-foreground hover:border-accent-tech hover:text-accent-tech"
             >
-              <FileText className="h-4 w-4" />
-              <span>CV</span>
+              <FileText className="h-3.5 w-3.5" />
+              <span>Ladda ner CV</span>
               <ArrowUpRight className="ml-auto h-3.5 w-3.5" />
             </a>
           </nav>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex gap-3 text-sidebar-foreground/60">
-            <a
-              href="https://github.com/"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-sidebar-foreground"
-            >
-              <Github className="h-4 w-4" />
-            </a>
-            <a
-              href="https://linkedin.com/"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-sidebar-foreground"
-            >
-              <Linkedin className="h-4 w-4" />
-            </a>
-            <a
-              href="mailto:abdi.elmii@outlook.com"
-              className="hover:text-sidebar-foreground"
-            >
-              <AtSign className="h-4 w-4" />
-            </a>
+        <div className="space-y-3">
+          {/* Status block */}
+          <div className="rounded-md border border-sidebar-border bg-sidebar-accent/30 px-3 py-2 font-mono text-[10px] text-sidebar-foreground/60">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-tech animate-pulse" />
+                online
+              </span>
+              <span>{time || "--:--:--"}</span>
+            </div>
+            <div className="mt-1 flex items-center justify-between">
+              <span>STO · UTC+1</span>
+              <span>v2.0.26</span>
+            </div>
           </div>
-          <p className="font-mono text-[10px] leading-relaxed text-sidebar-foreground/40">
-            © 2026 Abdirahman Elmi
-            <br />
-            Stockholm · Sverige
+
+          <div className="flex gap-2">
+            <SocialIcon href="https://github.com/" Icon={Github} />
+            <SocialIcon href="https://linkedin.com/" Icon={Linkedin} />
+            <SocialIcon href="mailto:abdi.elmii@outlook.com" Icon={AtSign} />
+          </div>
+          <p className="font-mono text-[10px] leading-relaxed text-sidebar-foreground/35">
+            © 2026 · MIT
           </p>
         </div>
       </aside>
@@ -181,77 +217,154 @@ function PortfolioPage() {
       {/* Main */}
       <main className="md:ml-72">
         {/* HEM */}
-        <Section id="hem" className="grid-paper">
-          <div className="mx-auto grid min-h-[88vh] max-w-6xl items-center gap-12 px-6 py-24 md:grid-cols-12 md:px-16">
+        <Section id="hem" className="relative overflow-hidden grid-dots">
+          {/* gradient glow */}
+          <div className="pointer-events-none absolute -top-32 left-1/2 -z-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-accent-tech/10 blur-3xl" />
+
+          <div className="relative mx-auto grid min-h-[90vh] max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-12 md:px-16">
             <div className="md:col-span-7">
-              <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
-                <span className="h-1.5 w-1.5 rounded-full bg-foreground animate-pulse" />
-                tillgänglig för uppdrag
+              {/* Status chip */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1.5 font-mono text-[11px] backdrop-blur">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-tech opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-tech" />
+                </span>
+                <span className="text-foreground/80">status:</span>
+                <span className="text-foreground">tillgänglig för uppdrag</span>
               </div>
-              <h1 className="mt-6 font-display text-5xl font-bold leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
+
+              <h1 className="mt-7 font-display text-5xl font-bold leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
                 Abdirahman
                 <br />
-                <span className="text-muted-foreground">Elmi.</span>
+                <span className="text-muted-foreground">Elmi</span>
+                <span className="text-accent-tech">.</span>
               </h1>
-              <p className="mt-8 max-w-xl text-lg leading-relaxed text-foreground/80 md:text-xl">
+
+              {/* Terminal command */}
+              <div className="mt-6 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 font-mono text-[12px]">
+                <span className="text-accent-tech">$</span>
+                <span className="text-muted-foreground">./build --stack=</span>
+                <span className="text-foreground">dotnet,azure,react</span>
+                <span className="animate-caret text-accent-tech">▌</span>
+              </div>
+
+              <p className="mt-7 max-w-xl text-lg leading-relaxed text-foreground/80 md:text-xl">
                 .NET-utvecklare med ett hjärta för ren arkitektur. Jag bygger
                 stabila och skalbara lösningar med{" "}
-                <span className="font-mono text-foreground">C#</span>,{" "}
-                <span className="font-mono text-foreground">ASP.NET</span> och{" "}
-                <span className="font-mono text-foreground">Azure</span>.
+                <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-[0.85em] text-foreground">
+                  C#
+                </code>
+                ,{" "}
+                <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-[0.85em] text-foreground">
+                  ASP.NET
+                </code>{" "}
+                och{" "}
+                <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-[0.85em] text-foreground">
+                  Azure
+                </code>
+                .
               </p>
 
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div className="mt-9 flex flex-wrap gap-3">
                 <a
                   href="#projekt"
-                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-2 rounded-md bg-foreground px-5 py-3 text-sm font-medium text-background transition-all hover:-translate-y-0.5 hover:shadow-tech"
                 >
+                  <span className="font-mono text-accent-tech">›</span>
                   Se projekt
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
                 </a>
                 <a
                   href="#kontakt"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium hover:bg-secondary"
+                  className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-3 text-sm font-medium hover:border-foreground"
                 >
+                  <Mail className="h-4 w-4" />
                   Kontakta mig
                 </a>
               </div>
             </div>
 
+            {/* Terminal portrait card */}
             <div className="md:col-span-5">
               <div className="relative mx-auto max-w-sm">
-                <div className="absolute -inset-3 -z-10 rounded-2xl border border-border" />
-                <div className="absolute -bottom-3 -right-3 -z-10 h-full w-full rounded-2xl bg-foreground" />
-                <div className="overflow-hidden rounded-2xl border border-border bg-card">
-                  <img
-                    src={portrait.url}
-                    alt="Porträtt av Abdirahman Elmi"
-                    className="aspect-[4/5] w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
-                    loading="eager"
-                  />
-                </div>
-                <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  <span>Stockholm · SE</span>
-                  <span>/ 2026</span>
+                <div className="absolute -inset-2 -z-10 rounded-xl border border-accent-tech/30" />
+                <div className="absolute -bottom-3 -right-3 -z-10 h-full w-full rounded-xl bg-foreground" />
+                <div className="overflow-hidden rounded-xl border border-border bg-card shadow-tech">
+                  {/* Window chrome */}
+                  <div className="flex items-center gap-1.5 border-b border-border bg-secondary/50 px-3 py-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.18_27)]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.78_0.15_85)]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-accent-tech" />
+                    <span className="ml-2 font-mono text-[10px] text-muted-foreground">
+                      ~/profile/abdi.jpg
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <img
+                      src={portrait.url}
+                      alt="Porträtt av Abdirahman Elmi"
+                      className="aspect-[4/5] w-full object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                      loading="eager"
+                    />
+                    {/* scanline overlay */}
+                    <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent_0,transparent_2px,oklch(0_0_0/0.04)_2px,oklch(0_0_0/0.04)_3px)]" />
+                  </div>
+                  <div className="flex items-center justify-between border-t border-border bg-secondary/40 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="h-3 w-3" />
+                      Stockholm · SE
+                    </span>
+                    <span>59.3°N</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mx-auto max-w-6xl px-6 pb-24 md:px-16">
-            <div className="grid grid-cols-2 gap-8 border-t border-border pt-8 md:grid-cols-4">
+          {/* Marquee tech ticker */}
+          <div className="relative border-y border-border bg-foreground py-3 text-background overflow-hidden">
+            <div className="flex animate-marquee whitespace-nowrap font-mono text-xs uppercase tracking-widest">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex items-center gap-8 px-4">
+                  {[
+                    "C#",
+                    "ASP.NET Core",
+                    "Azure",
+                    "SQL Server",
+                    "Entity Framework",
+                    ".NET MAUI",
+                    "WPF",
+                    "React",
+                    "TypeScript",
+                    "Git",
+                    "Docker",
+                    "Clean Architecture",
+                  ].map((t) => (
+                    <span key={t + i} className="flex items-center gap-8">
+                      <span className="text-accent-tech">◆</span>
+                      <span>{t}</span>
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-auto max-w-6xl px-6 py-12 md:px-16">
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-4">
               {[
-                { k: "Stack", v: ".NET · C#" },
-                { k: "Plats", v: "Stockholm" },
-                { k: "Fokus", v: "Backend & Cloud" },
-                { k: "År aktiv", v: "2024 →" },
-              ].map((it) => (
-                <div key={it.k}>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    {it.k}
+                { k: "Stack", v: ".NET · C#", Icon: Code2 },
+                { k: "Cloud", v: "Azure", Icon: Cloud },
+                { k: "Fokus", v: "Backend", Icon: Cpu },
+                { k: "Aktiv", v: "2024 →", Icon: Activity },
+              ].map(({ k, v, Icon }) => (
+                <div key={k} className="bg-card p-5">
+                  <Icon className="h-4 w-4 text-accent-tech" />
+                  <div className="mt-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {k}
                   </div>
                   <div className="mt-1 font-display text-sm font-semibold">
-                    {it.v}
+                    {v}
                   </div>
                 </div>
               ))}
@@ -262,15 +375,14 @@ function PortfolioPage() {
         {/* OM MIG */}
         <Section id="om">
           <div className="mx-auto max-w-5xl px-6 py-24 md:px-16">
-            <SectionHeader index="02" title="Om mig" subtitle=".NET Developer" />
+            <SectionHeader index="02" title="Om mig" subtitle="about.md" />
             <div className="mt-12 grid gap-12 md:grid-cols-5">
               <div className="md:col-span-3 space-y-6 text-foreground/80 leading-relaxed">
                 <p className="text-lg">
+                  <span className="font-mono text-accent-tech">{"//"} </span>
                   Koden är platsen där jag trivs bäst. Med en känsla för
                   detaljer och ett hjärta för ren arkitektur bygger jag
                   .NET-applikationer som inte bara fungerar — de känns rätt.
-                  C# och ASP.NET är mina favoritverktyg när idéer ska bli
-                  stabila, skalbara lösningar.
                 </p>
                 <p>
                   Modern utveckling handlar inte bara om verktyg — det handlar
@@ -286,27 +398,27 @@ function PortfolioPage() {
                   kunden.
                 </p>
               </div>
-              <ul className="md:col-span-2 space-y-4">
+              <ul className="md:col-span-2 space-y-3">
                 {[
-                  { Icon: Phone, k: "Telefon", v: "+46 73 963 75 26" },
-                  { Icon: MapPin, k: "Stad", v: "Stockholm, Sverige" },
-                  { Icon: AtSign, k: "E-post", v: "abdi.elmii@outlook.com" },
+                  { Icon: Phone, k: "phone", v: "+46 73 963 75 26" },
+                  { Icon: MapPin, k: "location", v: "Stockholm, SE" },
+                  { Icon: AtSign, k: "email", v: "abdi.elmii@outlook.com" },
                   {
                     Icon: GraduationCap,
-                    k: "Examen",
-                    v: "Yrkesexamen — Systemutveckling .NET",
+                    k: "education",
+                    v: "Systemutveckling .NET",
                   },
                 ].map(({ Icon, k, v }) => (
                   <li
                     key={k}
-                    className="flex items-start gap-3 rounded-lg border border-border bg-card p-4"
+                    className="flex items-start gap-3 rounded-lg border border-border bg-card p-3.5 transition-colors hover:border-accent-tech"
                   >
-                    <Icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                        {k}
+                    <Icon className="mt-0.5 h-4 w-4 text-accent-tech" />
+                    <div className="min-w-0">
+                      <div className="font-mono text-[10px] text-muted-foreground">
+                        {k}:
                       </div>
-                      <div className="text-sm font-medium">{v}</div>
+                      <div className="truncate text-sm font-medium">{v}</div>
                     </div>
                   </li>
                 ))}
@@ -316,9 +428,13 @@ function PortfolioPage() {
         </Section>
 
         {/* PROJEKT */}
-        <Section id="projekt" className="bg-secondary/50">
+        <Section id="projekt" className="bg-secondary/40 grid-paper">
           <div className="mx-auto max-w-5xl px-6 py-24 md:px-16">
-            <SectionHeader index="03" title="Projekt" subtitle="Utvalt arbete" />
+            <SectionHeader
+              index="03"
+              title="Projekt"
+              subtitle="git log --oneline"
+            />
             <div className="mt-12 space-y-4">
               {projects.map((p, i) => (
                 <ProjectCard key={p.title} project={p} index={i + 1} />
@@ -333,94 +449,134 @@ function PortfolioPage() {
             <SectionHeader
               index="04"
               title="Kunskap"
-              subtitle="Färdigheter & teknologier"
+              subtitle="stack.config.ts"
             />
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {skills.map((s) => (
-                <div
-                  key={s.title}
-                  className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-foreground"
-                >
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    {s.area}
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {skills.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <div
+                    key={s.title}
+                    className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-accent-tech hover:shadow-tech"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background">
+                        <Icon className="h-4 w-4 text-accent-tech" />
+                      </div>
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                        {s.area}
+                      </div>
+                    </div>
+                    <h3 className="mt-5 font-display text-xl font-bold">
+                      {s.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-foreground/70">
+                      {s.desc}
+                    </p>
+                    {/* Proficiency bar */}
+                    <div className="mt-5">
+                      <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground">
+                        <span>proficiency</span>
+                        <span>{s.level}%</span>
+                      </div>
+                      <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-secondary">
+                        <div
+                          className="h-full rounded-full bg-foreground transition-all"
+                          style={{ width: `${s.level}%` }}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {s.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded border border-border bg-background px-2 py-0.5 font-mono text-[10px]"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <h3 className="mt-2 font-display text-xl font-bold">
-                    {s.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-foreground/70">
-                    {s.desc}
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-1.5">
-                    {s.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-border bg-background px-2.5 py-1 font-mono text-[10px]"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </Section>
 
         {/* KONTAKT */}
-        <Section id="kontakt" className="bg-secondary/50">
+        <Section id="kontakt" className="bg-secondary/40">
           <div className="mx-auto max-w-5xl px-6 py-24 md:px-16">
             <SectionHeader
               index="05"
               title="Kontakt"
-              subtitle="Hör av dig"
+              subtitle="curl --message"
             />
-            <div className="mt-12 grid gap-10 md:grid-cols-5">
-              <div className="md:col-span-2 space-y-5">
+            <div className="mt-12 grid gap-8 md:grid-cols-5">
+              <div className="md:col-span-2 space-y-3">
                 {[
-                  { Icon: MapPin, k: "Plats", v: "Stockholm, Sverige" },
-                  { Icon: AtSign, k: "E-post", v: "abdi.elmii@outlook.com" },
-                  { Icon: Phone, k: "Telefon", v: "+46 73 963 75 26" },
+                  { Icon: MapPin, k: "location", v: "Stockholm, SE" },
+                  { Icon: AtSign, k: "email", v: "abdi.elmii@outlook.com" },
+                  { Icon: Phone, k: "phone", v: "+46 73 963 75 26" },
                 ].map(({ Icon, k, v }) => (
-                  <div key={k} className="flex items-start gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card">
-                      <Icon className="h-4 w-4" />
+                  <div
+                    key={k}
+                    className="flex items-start gap-3 rounded-lg border border-border bg-card p-3.5"
+                  >
+                    <div className="grid h-9 w-9 place-items-center rounded-md border border-border bg-background">
+                      <Icon className="h-4 w-4 text-accent-tech" />
                     </div>
-                    <div>
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                        {k}
+                    <div className="min-w-0">
+                      <div className="font-mono text-[10px] text-muted-foreground">
+                        {k}:
                       </div>
-                      <div className="mt-0.5 text-sm font-medium">{v}</div>
+                      <div className="truncate text-sm font-medium">{v}</div>
                     </div>
                   </div>
                 ))}
+                <div className="rounded-lg border border-border bg-foreground p-4 text-background font-mono text-[11px]">
+                  <div className="text-accent-tech">$ ping abdi</div>
+                  <div className="mt-1 opacity-80">
+                    Reply from abdi.elmii@outlook.com
+                  </div>
+                  <div className="opacity-80">time&lt;24h · TTL=∞</div>
+                </div>
               </div>
 
               <form
-                className="md:col-span-3 space-y-4 rounded-xl border border-border bg-card p-6"
+                className="md:col-span-3 space-y-4 rounded-xl border border-border bg-card p-6 shadow-tech"
                 onSubmit={(e) => {
                   e.preventDefault();
                   alert("Tack! Ditt meddelande har skickats.");
                 }}
               >
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Namn" name="name" required />
-                  <Field label="E-post" name="email" type="email" required />
+                <div className="flex items-center gap-1.5 border-b border-border pb-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.65_0.18_27)]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.78_0.15_85)]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-accent-tech" />
+                  <span className="ml-2 font-mono text-[10px] text-muted-foreground">
+                    message.compose()
+                  </span>
                 </div>
-                <Field label="Ämne" name="subject" required />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Field label="namn" name="name" required />
+                  <Field label="e-post" name="email" type="email" required />
+                </div>
+                <Field label="ämne" name="subject" required />
                 <div>
                   <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    Meddelande
+                    meddelande
                   </label>
                   <textarea
                     rows={5}
                     required
-                    className="mt-1.5 w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-sm focus:border-foreground focus:outline-none"
+                    className="mt-1.5 w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 font-mono text-sm focus:border-accent-tech focus:outline-none focus:ring-1 focus:ring-accent-tech/30"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-2 rounded-md bg-foreground px-5 py-3 text-sm font-medium text-background transition-all hover:-translate-y-0.5 hover:shadow-tech"
                 >
+                  <span className="font-mono text-accent-tech">›</span>
                   Skicka meddelande
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
                 </button>
@@ -435,15 +591,15 @@ function PortfolioPage() {
             <SectionHeader
               index="06"
               title="Referenser"
-              subtitle="Personer som vouchar"
+              subtitle="trusted_by[]"
             />
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <div className="mt-12 grid gap-5 md:grid-cols-2">
               {references.map((r) => (
                 <figure
                   key={r.name}
-                  className="rounded-xl border border-border bg-card p-8"
+                  className="rounded-xl border border-border bg-card p-7 transition-all hover:border-accent-tech"
                 >
-                  <Quote className="h-5 w-5 text-muted-foreground" />
+                  <Quote className="h-5 w-5 text-accent-tech" />
                   <blockquote className="mt-4 text-sm leading-relaxed text-foreground/80">
                     {r.title}
                   </blockquote>
@@ -453,12 +609,12 @@ function PortfolioPage() {
                         {r.name}
                       </div>
                       <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                        {r.relation}
+                        // {r.relation}
                       </div>
                     </div>
                     <a
                       href="#"
-                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground hover:text-accent-tech"
                     >
                       <Linkedin className="h-3.5 w-3.5" />
                       {r.handle}
@@ -470,18 +626,39 @@ function PortfolioPage() {
           </div>
         </Section>
 
-        <footer className="border-t border-border px-6 py-10 md:px-16">
-          <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+        <footer className="border-t border-border px-6 py-8 md:px-16">
+          <div className="mx-auto flex max-w-5xl flex-col items-start justify-between gap-3 md:flex-row md:items-center">
             <p className="font-mono text-xs text-muted-foreground">
-              © 2026 Abdirahman Elmi. Alla rättigheter förbehållna.
+              <span className="text-accent-tech">$</span> echo © 2026
+              Abdirahman Elmi
             </p>
-            <p className="font-mono text-xs text-muted-foreground">
-              Byggd med omsorg i Stockholm.
+            <p className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+              <GitBranch className="h-3 w-3" />
+              main · byggd i Stockholm
             </p>
           </div>
         </footer>
       </main>
     </div>
+  );
+}
+
+function SocialIcon({
+  href,
+  Icon,
+}: {
+  href: string;
+  Icon: typeof Github;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="grid h-8 w-8 place-items-center rounded-md border border-sidebar-border text-sidebar-foreground/70 transition-colors hover:border-accent-tech hover:text-accent-tech"
+    >
+      <Icon className="h-3.5 w-3.5" />
+    </a>
   );
 }
 
@@ -514,11 +691,15 @@ function SectionHeader({
     <div className="flex items-end justify-between border-b border-border pb-4">
       <div>
         <div className="font-mono text-xs text-muted-foreground">
-          /{index} — {subtitle}
+          <span className="text-accent-tech">/{index}</span> — {subtitle}
         </div>
         <h2 className="mt-2 font-display text-4xl font-bold md:text-5xl">
           {title}
+          <span className="text-accent-tech">.</span>
         </h2>
+      </div>
+      <div className="hidden font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:block">
+        section/{index}
       </div>
     </div>
   );
@@ -532,24 +713,33 @@ function ProjectCard({
   index: number;
 }) {
   return (
-    <article className="group grid gap-6 rounded-xl border border-border bg-card p-6 transition-all hover:border-foreground md:grid-cols-12 md:p-8">
-      <div className="md:col-span-2">
-        <div className="font-mono text-xs text-muted-foreground">
-          0{index}
+    <article className="group relative grid gap-6 rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-accent-tech hover:shadow-tech md:grid-cols-12 md:p-8">
+      <div className="md:col-span-3">
+        <div className="font-mono text-[10px] text-muted-foreground">
+          commit
+        </div>
+        <div className="mt-1 font-mono text-sm font-bold tracking-wider">
+          #{String(index).padStart(3, "0")}
         </div>
         <div
-          className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest ${
+          className={`mt-4 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest ${
             project.status === "Live"
-              ? "bg-foreground text-background"
+              ? "bg-accent-tech text-background"
               : "border border-border text-muted-foreground"
           }`}
         >
           <span className="h-1.5 w-1.5 rounded-full bg-current" />
           {project.status}
         </div>
+        <div className="mt-3 font-mono text-[10px] text-muted-foreground">
+          {project.year}
+        </div>
       </div>
-      <div className="md:col-span-10">
-        <h3 className="font-display text-2xl font-bold tracking-tight md:text-3xl">
+      <div className="md:col-span-9">
+        <div className="font-mono text-[10px] text-muted-foreground">
+          // {project.category}
+        </div>
+        <h3 className="mt-1 font-display text-2xl font-bold tracking-tight md:text-3xl">
           {project.title}
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-foreground/70 md:text-base">
@@ -559,14 +749,14 @@ function ProjectCard({
           {project.tags.map((t) => (
             <span
               key={t}
-              className="rounded-full border border-border bg-background px-2.5 py-1 font-mono text-[10px]"
+              className="rounded border border-border bg-background px-2 py-0.5 font-mono text-[10px]"
             >
               {t}
             </span>
           ))}
           <a
             href="#"
-            className="ml-auto inline-flex items-center gap-1 text-xs font-medium transition-colors hover:text-foreground/70"
+            className="ml-auto inline-flex items-center gap-1 font-mono text-xs font-medium text-foreground transition-colors hover:text-accent-tech"
           >
             {project.cta}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:rotate-45" />
@@ -597,7 +787,7 @@ function Field({
         name={name}
         type={type}
         required={required}
-        className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm focus:border-foreground focus:outline-none"
+        className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2.5 font-mono text-sm focus:border-accent-tech focus:outline-none focus:ring-1 focus:ring-accent-tech/30"
       />
     </div>
   );
@@ -610,6 +800,8 @@ const projects = [
     tags: ["C#", ".NET MAUI", "Azure", "SQL"],
     status: "I process",
     cta: "Läs mer",
+    year: "2026",
+    category: "Mobile / FinTech",
   },
   {
     title: "Easy Bank — Webbaserad bankplattform",
@@ -617,6 +809,8 @@ const projects = [
     tags: ["ASP.NET Core", "Razor Pages", "EF Core", "SQL Server", "Bootstrap"],
     status: "Live",
     cta: "Live demo",
+    year: "2025",
+    category: "Web / FinTech",
   },
   {
     title: "WPF IoT Project",
@@ -624,27 +818,35 @@ const projects = [
     tags: ["WPF", "MVVM", "Azure IoT Hub", "C#", "Device Twin"],
     status: "Live",
     cta: "Se kod",
+    year: "2025",
+    category: "Desktop / IoT",
   },
 ];
 
 const skills = [
   {
     area: "Backend",
-    title: "C# Programmering",
-    desc: "Erfaren i att bygga applikationer med C# — webb, skrivbord och mobil. Använder .NET Framework och .NET Core för skalbara lösningar.",
-    tags: ["ASP.NET Core", "Entity Framework", "LINQ"],
+    title: "C# & .NET",
+    desc: "Erfaren i att bygga applikationer med C# — webb, skrivbord och mobil. Använder .NET Core för skalbara lösningar.",
+    tags: ["ASP.NET Core", "Entity Framework", "LINQ", "MAUI"],
+    icon: Code2,
+    level: 90,
   },
   {
-    area: "Data",
-    title: "Databas-teknologier",
+    area: "Data & Cloud",
+    title: "SQL & Azure",
     desc: "Kunnig i SQL och Azure för databashantering och molntjänster. Designar relationsdatabaser och skriver komplexa frågor.",
-    tags: ["SQL Server", "Azure SQL", "Datamodellering", "Stored Procedures"],
+    tags: ["SQL Server", "Azure SQL", "Datamodellering"],
+    icon: Database,
+    level: 80,
   },
   {
     area: "Frontend",
-    title: "Frontend-utveckling",
+    title: "React & Web",
     desc: "Skapar responsiva och tilltalande webbgränssnitt med moderna ramverk för att bygga dynamiska webbapplikationer.",
-    tags: ["HTML5", "CSS3", "JavaScript", "React", "Bootstrap"],
+    tags: ["HTML5", "CSS3", "JavaScript", "React"],
+    icon: Zap,
+    level: 75,
   },
 ];
 
