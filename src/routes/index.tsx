@@ -470,7 +470,10 @@ function PortfolioPage() {
               );
             })}
             <a
-              href="#cv"
+              href={cvFile.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Elmi_cv.pdf"
               className="mt-4 flex items-center gap-3 rounded-md border border-sidebar-border px-3 py-2 text-sm font-medium text-sidebar-foreground hover:border-accent-tech hover:text-accent-tech"
             >
               <FileText className="h-3.5 w-3.5" />
