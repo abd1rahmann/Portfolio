@@ -4,6 +4,7 @@ import portrait from "@/assets/abdi-portrait.jpg.asset.json";
 import acUnitVideo from "@/assets/ac-unit.mp4.asset.json";
 import easybankImage from "@/assets/easybank.png.asset.json";
 import siliconImage from "@/assets/silicon.png.asset.json";
+import cvFile from "@/assets/Elmi_cv.pdf.asset.json";
 import {
   Home,
   User,
@@ -469,7 +470,10 @@ function PortfolioPage() {
               );
             })}
             <a
-              href="#cv"
+              href={cvFile.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Elmi_cv.pdf"
               className="mt-4 flex items-center gap-3 rounded-md border border-sidebar-border px-3 py-2 text-sm font-medium text-sidebar-foreground hover:border-accent-tech hover:text-accent-tech"
             >
               <FileText className="h-3.5 w-3.5" />
